@@ -1,0 +1,59 @@
+{
+    "name": "datomatic/nova-markdown-tui",
+    "description": "A Laravel Nova field for markdown management via ToastUI editor.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "field",
+        "fields",
+        "markdown",
+        "tui",
+        "toast-ui"
+    ],
+    "authors": [
+        {
+            "name": "Roberto Negro",
+            "email": "roberto@datomatic.io",
+            "role": "Developer"
+        },
+        {
+            "name": "Alberto Peripolli",
+            "email": "alberto@datomatic.io",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=8.1",
+        "laravel/nova": "^4.1",
+        "nova-kit/nova-packages-tool": "^1.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Datomatic\\NovaMarkdownTui\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Datomatic\\NovaMarkdownTui\\FieldServiceProvider"
+            ]
+        }
+    },
+    "script": {
+        "post-autoload-dump": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ]
+}
