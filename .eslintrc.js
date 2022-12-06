@@ -38,6 +38,7 @@ module.exports = {
     commonjs: true,
     node: true,
     es6: true,
+    browser: true,
   },
   extends: getExtends(false),
   rules: getRules(false),
@@ -51,6 +52,7 @@ module.exports = {
       env: {
         node: true,
         es6: true,
+        browser: true,
       },
       parser: 'vue-eslint-parser',
       files: ['resources/js/**/*.vue'],
@@ -66,6 +68,7 @@ module.exports = {
       env: {
         node: true,
         es6: true,
+        browser: true,
       },
       files: ['resources/js/**/*.js'],
       extends: getExtends(false),

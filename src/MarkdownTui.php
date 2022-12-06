@@ -4,10 +4,9 @@ namespace Datomatic\NovaMarkdownTui;
 
 use Datomatic\NovaMarkdownTui\Enums\EditorType;
 use Datomatic\NovaMarkdownTui\Enums\PreviewStyle;
-use Illuminate\Support\Carbon;
 use Laravel\Nova\Fields\Field;
 
-class ToastUiEditor extends Field
+class MarkdownTui extends Field
 {
     /**
      * The field's component.
@@ -35,10 +34,13 @@ class ToastUiEditor extends Field
 
     protected $allowIframe;
 
+    protected $language;
+
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
 
+        $this->language = config('nova-markdown-tui.language', app()->getLocale()) ?? app()->getLocale();
         $this->initialEditorType = config('nova-markdown-tui.initialEditorType');
         $this->plugins = config('nova-markdown-tui.plugins');
         $this->options = config('nova-markdown-tui.options');
@@ -64,7 +66,7 @@ class ToastUiEditor extends Field
 
     public function language(string $language)
     {
-        $this->options['language'] = $language;
+        $this->options['language'] = $language ?? app()->getLocale();
 
         return $this;
     }
@@ -118,11 +120,12 @@ class ToastUiEditor extends Field
         return $this;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             ...parent::jsonSerialize(),
             'editor' => [
+                'language' => $this->language,
                 'initialEditType' => $this->initialEditorType->value,
                 'plugins' => $this->plugins,
                 'options' => $this->options,

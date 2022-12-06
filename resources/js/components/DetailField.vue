@@ -1,19 +1,29 @@
 <template>
-  <panel-item :field="field">
+  <PanelItem :field="field">
     <template #value>
-      <viewer :initial-value="field.value" />
+      <div class="datomatic-nova-markdown-tui flex flex-col">
+        <div :id="field.name" ref="editor" :class="editorClass" />
+      </div>
     </template>
-  </panel-item>
+  </PanelItem>
 </template>
 
 <script>
-import { Viewer } from '@toast-ui/vue-editor';
+import HasEditor from '../mixins/HasEditor';
 
 export default {
-  components: {
-    viewer: Viewer,
-  },
+  mixins: [HasEditor],
 
   props: ['resource', 'resourceName', 'resourceId', 'field'],
+
+  computed: {
+    decodedFieldValue() {
+      return this.decodeEntities(this.field.value ?? '');
+    },
+  },
+
+  created() {
+    this.initializeEditorConfig({ ...this.field.editor, viewer: true });
+  },
 };
 </script>

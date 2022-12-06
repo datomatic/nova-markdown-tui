@@ -44,7 +44,7 @@ You can use the `Datomatic\NovaMarkdownTui\ToastUiEditor` field in your Nova res
 
 namespace App\Nova;
 
-use Datomatic\NovaMarkdownTui\ToastUiEditor;
+use Datomatic\NovaMarkdownTui\MarkdownTui;
 use Illuminate\Http\Request;
 
 class BlogPost extends Resource
@@ -56,7 +56,7 @@ class BlogPost extends Resource
         return [
             // ...
 
-            ToastUiEditor::make('Content'),
+            MarkdownTui::make('Content'),
 
             // ...
         ];

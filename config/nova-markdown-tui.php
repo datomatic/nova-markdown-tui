@@ -2,6 +2,9 @@
 
 return [
 
+    // If null, app()->getLocale() is used.
+    'language' => null,
+
     'initialEditorType' => \Datomatic\NovaMarkdownTui\Enums\EditorType::WYSIWYG,
 
     'options' => [
@@ -36,7 +39,7 @@ return [
 
     'plugins' => ['chart', 'tableMergedCell', 'uml', 'colorSyntax', 'codeSyntaxHighlight'],
 
-    'height' => '300px',
+    'height' => 'auto',
 
     'previewStyle' => \Datomatic\NovaMarkdownTui\Enums\PreviewStyle::TAB,
 
