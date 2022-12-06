@@ -55,18 +55,13 @@ export default {
   mounted() {
     if (this.$refs.editor) {
       const editor = Editor.factory({
+        ...this.editorConfig,
         el: this.$refs.editor,
-        language: this.editorConfig.language,
+        viewer: this.editorConfig.viewer ?? false,
         initialValue: this.decodedFieldValue,
-        initialEditType: this.editorConfig.initialEditType,
-        previewStyle: this.editorConfig.previewStyle,
-        height: this.editorConfig.height,
-        options: this.editorConfig.options,
-        plugins: this.editorConfig.plugins,
         events: {
           change: this.editorChange,
         },
-        viewer: this.editorConfig.viewer ?? false,
       });
       this.removeImageUpload();
 
@@ -94,11 +89,8 @@ export default {
     initializeEditorConfig(config) {
       this.editorConfig = {
         ...config,
-        options: {
-          ...config.options,
-          customHTMLSanitizer: this.sanitizeHtml,
-          useDefaultHTMLSanitizer: false,
-        },
+        customHTMLSanitizer: this.sanitizeHtml,
+        useDefaultHTMLSanitizer: false,
         plugins: config.plugins.map((plugin) => {
           switch (plugin) {
             case 'uml':
@@ -114,6 +106,7 @@ export default {
           }
         }),
       };
+      console.log(this.editorConfig);
     },
 
     editorChange() {

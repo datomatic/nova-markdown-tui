@@ -22,36 +22,21 @@ class MarkdownTui extends Field
      */
     public $showOnIndex = false;
 
-    protected $initialEditorType;
-
-    protected $plugins;
-
     protected $options;
-
-    protected $height;
-
-    protected $previewStyle;
-
-    protected $allowIframe;
-
-    protected $language;
 
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
 
-        $this->language = config('nova-markdown-tui.language', app()->getLocale()) ?? app()->getLocale();
-        $this->initialEditorType = config('nova-markdown-tui.initialEditorType');
-        $this->plugins = config('nova-markdown-tui.plugins');
-        $this->options = config('nova-markdown-tui.options');
-        $this->height = config('nova-markdown-tui.height');
-        $this->previewStyle = config('nova-markdown-tui.previewStyle');
-        $this->allowIframe = (bool) config('nova-markdown-tui.allowIframe');
+        $this->options = [
+            ...config('nova-markdown-tui', []),
+            'language' => config('nova-markdown-tui.language', app()->getLocale()) ?? app()->getLocale(),
+        ];
     }
 
-    public function initialEditorType(EditorType $type)
+    public function initialEditType(EditorType $type)
     {
-        $this->initialEditorType = $type;
+        $this->options['initialEditType'] = $type;
 
         return $this;
     }
@@ -94,28 +79,28 @@ class MarkdownTui extends Field
 
     public function height(string $height)
     {
-        $this->height = $height;
+        $this->options['height'] = $height;
 
         return $this;
     }
 
     public function previewStyle(PreviewStyle $style)
     {
-        $this->previewStyle = $style;
+        $this->options['previewStyle'] = $style;
 
         return $this;
     }
 
     public function allowIframe(bool $allowIframe = true)
     {
-        $this->allowIframe = $allowIframe;
+        $this->options['allowIframe'] = $allowIframe;
 
         return $this;
     }
 
     public function plugins(array $plugins)
     {
-        $this->plugins = $plugins;
+        $this->options['plugins'] = $plugins;
 
         return $this;
     }
@@ -125,13 +110,10 @@ class MarkdownTui extends Field
         return [
             ...parent::jsonSerialize(),
             'editor' => [
-                'language' => $this->language,
-                'initialEditType' => $this->initialEditorType->value,
-                'plugins' => $this->plugins,
-                'options' => $this->options,
-                'height' => $this->height,
-                'previewStyle' => $this->previewStyle->value,
-                'allowIframe' => $this->allowIframe === true,
+                ...$this->options,
+                'initialEditType' => $this->options['initialEditType']->value,
+                'previewStyle' => $this->options['previewStyle']->value,
+                'allowIframe' => $this->options['allowIframe'] === true,
             ],
         ];
     }
