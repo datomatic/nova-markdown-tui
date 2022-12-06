@@ -106,7 +106,6 @@ export default {
           }
         }),
       };
-      console.log(this.editorConfig);
     },
 
     editorChange() {
