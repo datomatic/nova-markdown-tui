@@ -1,19 +1,28 @@
 <template>
-  <DefaultField :field="field" :show-help-text="false" :errors="errors" :full-width-content="true">
+  <component
+    :is="field.fullWidth ? 'FullWidthField' : 'DefaultField'"
+    :dusk="field.attribute"
+    :field="field"
+    :show-help-text="showHelpText"
+    :errors="errors"
+    full-width-content
+  >
     <template #field>
-      <p class="help-text help-text mb-2">{{ field.helpText }}</p>
       <div class="datomatic-nova-markdown-tui flex flex-col">
         <div :id="field.name" ref="editor" :class="editorClass" />
       </div>
     </template>
-  </DefaultField>
+  </component>
 </template>
 
 <script>
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
 import HasEditor from '../mixins/HasEditor';
+import FullWidthField from './FullWidthField';
 
 export default {
+  components: { FullWidthField },
+
   mixins: [FormField, HandlesValidationErrors, HasEditor],
 
   props: ['resourceName', 'resourceId', 'field'],

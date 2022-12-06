@@ -1,5 +1,5 @@
 <template>
-  <PanelItem :field="field">
+  <PanelItem :index="index" :field="field">
     <template #value>
       <div class="datomatic-nova-markdown-tui flex flex-col">
         <div :id="field.name" ref="editor" :class="editorClass" />
@@ -14,7 +14,7 @@ import HasEditor from '../mixins/HasEditor';
 export default {
   mixins: [HasEditor],
 
-  props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
 
   computed: {
     decodedFieldValue() {
