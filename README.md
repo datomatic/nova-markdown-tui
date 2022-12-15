@@ -4,9 +4,10 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/datomatic/nova-markdown-tui.svg?style=flat-square)](https://packagist.org/packages/datomatic/nova-markdown-tui)
 
-A markdown editor field for Laravel Nova based on [Toast UI Editor](https://ui.toast.com/tui-editor).
+A markdown editor field for Laravel Nova based on [Toast UI Editor](https://ui.toast.com/tui-editor) with automatic theme switch.
 
-![Nova Markdown Toast UI Screenshot](/docs/nova-markdown-tui.png)
+![Nova Markdown Toast UI Screenshot Light](docs/nova-markdown-tui-light.png)
+![Nova Markdown Toast UI Screenshot Dark](docs/nova-markdown-tui-dark.png)
 
 ## Contents
 
