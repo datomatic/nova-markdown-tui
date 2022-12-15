@@ -18,6 +18,8 @@ import '@toast-ui/editor/dist/i18n/tr-tr';
 import '@toast-ui/editor/dist/i18n/uk-ua';
 import '@toast-ui/editor/dist/i18n/zh-cn';
 import '@toast-ui/editor/dist/i18n/zh-tw';
+import '@toast-ui/editor/dist/i18n/zh-tw';
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
@@ -91,6 +93,7 @@ export default {
         ...config,
         customHTMLSanitizer: this.sanitizeHtml,
         useDefaultHTMLSanitizer: false,
+        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'ligth',
         plugins: config.plugins.map((plugin) => {
           switch (plugin) {
             case 'uml':
@@ -107,7 +110,6 @@ export default {
         }),
       };
     },
-
     editorChange() {
       this.value = this.editor.getMarkdown().trim();
     },
