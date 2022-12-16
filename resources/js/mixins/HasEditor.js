@@ -75,13 +75,13 @@ export default {
   methods: {
     removeImageUpload() {
       const observer = new MutationObserver(() => {
-        if (document.querySelector('.toastui-editor-popup.toastui-editor-popup-add-image')) {
-          document.querySelector('[aria-label="URL"]').click();
-          document.querySelector('[aria-label="File"]').style.display = 'none';
+        if (this.$refs.editor.querySelector('.toastui-editor-popup.toastui-editor-popup-add-image')) {
+          this.$refs.editor.querySelector('[aria-label="URL"]').click();
+          this.$refs.editor.querySelector('[aria-label="File"]').style.display = 'none';
         }
       });
 
-      const target = document.querySelector('.toastui-editor-popup');
+      const target = this.$refs.editor.querySelector('.toastui-editor-popup');
       if (target) {
         observer.observe(target, { attributes: true, attributeFilter: ['style'] });
       }
@@ -92,7 +92,7 @@ export default {
         ...config,
         customHTMLSanitizer: this.sanitizeHtml,
         useDefaultHTMLSanitizer: false,
-        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'ligth',
+        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
         plugins: config.plugins.map((plugin) => {
           switch (plugin) {
             case 'uml':
@@ -109,6 +109,7 @@ export default {
         }),
       };
     },
+
     editorChange() {
       this.value = this.editor.getMarkdown().trim();
     },
