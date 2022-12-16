@@ -48,4 +48,9 @@ return [
     'plugins' => ['chart', 'tableMergedCell', 'uml', 'colorSyntax', 'codeSyntaxHighlight'],
 
     'allowIframe' => false,
+
+    'mediaUploadUrl' => null,
+    'mediaUploadHeaders' => [
+        // 'X-Secret-Key' => '••••••'
+    ],
 ];

@@ -26,6 +26,7 @@ import chart from '@toast-ui/editor-plugin-chart';
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import uml from '@toast-ui/editor-plugin-uml';
 import Editor from '@toast-ui/editor';
+import axios from 'axios';
 
 export default {
   data: () => ({
@@ -36,6 +37,10 @@ export default {
   computed: {
     allowIframe() {
       return this.editorConfig.allowIframe === true;
+    },
+
+    allowMediaUpload() {
+      return !!this.editorConfig.mediaUploadUrl;
     },
 
     editorClass() {
@@ -63,6 +68,32 @@ export default {
         events: {
           change: this.editorChange,
         },
+        hooks: {
+          addImageBlobHook: async (blob, callback) => {
+            if (!this.editorConfig.mediaUploadUrl) {
+              console.error('No mediaUploadUrl found. Where should I upload the media?!');
+              return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', blob);
+
+            let result;
+            try {
+              result = await axios.post(this.editorConfig.mediaUploadUrl, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  ...(this.editorConfig.mediaUploadHeaders ?? []),
+                },
+              });
+            } catch (e) {
+              console.error(`Error while uploading media: ${e}`);
+              return;
+            }
+
+            callback(result.data?.url ?? '#', result.data?.alt ?? '');
+          },
+        },
       });
       this.removeImageUpload();
 
@@ -74,16 +105,18 @@ export default {
 
   methods: {
     removeImageUpload() {
-      const observer = new MutationObserver(() => {
-        if (this.$refs.editor.querySelector('.toastui-editor-popup.toastui-editor-popup-add-image')) {
-          this.$refs.editor.querySelector('[aria-label="URL"]').click();
-          this.$refs.editor.querySelector('[aria-label="File"]').style.display = 'none';
-        }
-      });
+      if (!this.allowMediaUpload) {
+        const observer = new MutationObserver(() => {
+          if (this.$refs.editor.querySelector('.toastui-editor-popup.toastui-editor-popup-add-image')) {
+            this.$refs.editor.querySelector('[aria-label="URL"]').click();
+            this.$refs.editor.querySelector('[aria-label="File"]').style.display = 'none';
+          }
+        });
 
-      const target = this.$refs.editor.querySelector('.toastui-editor-popup');
-      if (target) {
-        observer.observe(target, { attributes: true, attributeFilter: ['style'] });
+        const target = this.$refs.editor.querySelector('.toastui-editor-popup');
+        if (target) {
+          observer.observe(target, { attributes: true, attributeFilter: ['style'] });
+        }
       }
     },
 
@@ -117,7 +150,7 @@ export default {
     sanitizeHtml(html) {
       let config = {};
 
-      if (this.allowIframe === true) {
+      if (this.allowIframe) {
         config.ADD_TAGS = ['iframe'];
       }
 

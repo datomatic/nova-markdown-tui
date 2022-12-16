@@ -116,6 +116,30 @@ Allowed values are:
 
 `allowIframe(bool $allowIframe = true)`
 
+## Media upload
+You can choose to enable upload of media directly from the editor. The blob of the file will be sent to and endpoint of your choice (eventually with some additional headers that you can choose, to increase security).
+
+To achieve that, you have to set the configs in `config/nova-markdown-tui.php` accordingly:
+
+```php
+'mediaUploadUrl' => '/api/nova-markdown-tui/upload', // put your endpoint, or null to disable upload
+'mediaUploadHeaders' => [
+    'X-Secret-Key' => 'super-secret-token', // if you prefer to protect the endpoint
+],
+```
+
+In this way, you can store your file as you want: local storage, remote services, ....
+
+The file will be sent as a POST request with Content-Type `multipart/form-data`, with the file in `file` field of the body.
+The endpoint should respond with status 200 and a JSON body with the following structure:
+```json
+{
+  "url": "https://datomatic.io/files/image.jpg",
+  "alt": "Optional, alt text"
+}
+```
+If `alt` is provided, it will overwrite the "Description" field typed by the user in the editor. Keep it empty if you want to use what the user prompted.
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on recent changes.
