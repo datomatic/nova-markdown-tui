@@ -75,9 +75,7 @@ You may also configure defaults in the config file.
 
 ### initialEditType
 
-`initialEditTypeMarkdown()`
-
-`initialEditTypeWYSIWYG()`
+`initialEditType(\Datomatic\NovaMarkdownTui\Enums\EditorType::MARKDOWN)`
 
 ### options
 
