@@ -121,10 +121,30 @@ export default {
     },
 
     initializeEditorConfig(config) {
+      const self = this;
       this.editorConfig = {
         ...config,
         customHTMLSanitizer: this.sanitizeHtml,
         useDefaultHTMLSanitizer: false,
+        customMarkdownRenderer: {
+          link(node, { origin }) {
+            const o = origin();
+            if (o.delim.startsWith(']')) {
+              o.delim = self.decodeEntities(o.delim);
+            }
+            return o;
+          },
+        },
+        customHTMLRenderer: {
+          link(node, { origin }) {
+            const o = origin();
+            if (o.type === 'openTag') {
+              o.attributes.href = self.decodeEntities(o.attributes.href);
+            }
+            console.log(o);
+            return o;
+          },
+        },
         theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
         plugins: config.plugins.map((plugin) => {
           switch (plugin) {
@@ -144,7 +164,7 @@ export default {
     },
 
     editorChange() {
-      this.value = this.editor.getMarkdown().trim();
+      this.value = this.editor?.getMarkdown().trim();
     },
 
     sanitizeHtml(html) {
