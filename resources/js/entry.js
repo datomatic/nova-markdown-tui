@@ -1,4 +1,5 @@
-window.Vue.component = () => false;
+import DetailField from './components/DetailField';
+import FormField from './components/FormField';
 
 const handleDarkMode = () => {
   const cls = document.documentElement.classList;
@@ -11,16 +12,14 @@ const handleDarkMode = () => {
   }
 };
 
-// eslint-disable-next-line no-undef
-Nova.booting((Vue) => {
+Nova.booting((app, store) => {
   handleDarkMode();
-  // eslint-disable-next-line no-undef
   new MutationObserver(handleDarkMode).observe(document.documentElement, {
     attributes: true,
     attributeOldValue: true,
     attributeFilter: ['class'],
   });
 
-  Vue.component('detail-nova-markdown-tui', require('./components/DetailField').default);
-  Vue.component('form-nova-markdown-tui', require('./components/FormField').default);
+  app.component('detail-nova-markdown-tui', DetailField);
+  app.component('form-nova-markdown-tui', FormField);
 });
